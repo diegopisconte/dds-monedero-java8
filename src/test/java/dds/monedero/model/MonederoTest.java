@@ -70,6 +70,16 @@ public class MonederoTest {
   public void ExtraerMontoNegativo() {
     assertThrows(MontoNegativoException.class, () -> cuenta.sacar(-500));
   }
+
+  @Test
+  public void ObtenerMontoDelDia(){
+    cuenta.poner(1500);
+    cuenta.sacar(500);
+    cuenta.sacar(100);
+    cuenta.sacar(245);
+    Assertions.assertEquals(845,cuenta.getMontoExtraidoA(LocalDate.now()));
+  }
+
   @Test
   public void EsDeposito() {
     Assertions.assertTrue(unMovimiento.isDeposito());
