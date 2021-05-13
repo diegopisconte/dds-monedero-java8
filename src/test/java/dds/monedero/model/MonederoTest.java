@@ -20,7 +20,7 @@ public class MonederoTest {
     cuenta = new Cuenta();
   }
   Movimiento unMovimiento = new Movimiento(LocalDate.now(),500,true);
-  Movimiento otroMovimiento = new Movimiento(LocalDate.now(),500,false);
+  Movimiento otroMovimiento = new Movimiento(LocalDate.now(),500, false);
   @Test
   public void Poner() {
     cuenta.poner(1500);
@@ -77,11 +77,10 @@ public class MonederoTest {
 
   @Test
   public void FueDepositadoHoy() {
-    Assertions.assertTrue(unMovimiento.fueDepositado(LocalDate.now()));
+    Assertions.assertTrue( unMovimiento.esDeLaFecha(LocalDate.now()) && unMovimiento.isDeposito());
   }
-
   @Test
   public void FueExtraidoHoy() {
-    Assertions.assertTrue(otroMovimiento.fueExtraido(LocalDate.now()));
+    Assertions.assertTrue( unMovimiento.esDeLaFecha(LocalDate.now()) && unMovimiento.isExtraccion());
   }
 }
