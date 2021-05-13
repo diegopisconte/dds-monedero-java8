@@ -1,0 +1,77 @@
+TYPE TEST
+
+    ***********************************CUENTA - LINEA 34******************************************************
+    if (getMovimientos().stream().filter(movimiento -> movimiento.isDeposito()).count() >= 3)
+
+    ***********************************CUENTA - LINEA 64******************************************************
+    filter(movimiento -> !movimiento.isDeposito() && movimiento.getFecha().equals(fecha))
+
+DUPLICATED CODE
+
+    ************************************CUENTA - LINEA 21*****************************************************
+    public Cuenta(double montoInicial) { saldo = montoInicial; }
+
+    ************************************CUENTA - LINEA 38*****************************************************
+    new Movimiento(LocalDate.now(), cuanto, true).agregateA(this);
+
+    ************************************CUENTA - LINEA 54*****************************************************
+    new Movimiento(LocalDate.now(), cuanto, false).agregateA(this);
+
+    ********************************MOVIMIENTO - LINEA 26 A 30************************************************
+    public boolean fueDepositado(LocalDate fecha) {
+        return isDeposito() && esDeLaFecha(fecha);
+      }
+
+      public boolean fueExtraido(LocalDate fecha) {
+        return isExtraccion() && esDeLaFecha(fecha);
+      }
+
+FEATURE ENVY
+
+    ************************************CUENTA - LINEA 62 A 67************************************************
+    public double getMontoExtraidoA(LocalDate fecha) {
+        return getMovimientos().stream()
+            .filter(movimiento -> !movimiento.isDeposito() && movimiento.getFecha().equals(fecha))
+            .mapToDouble(Movimiento::getMonto)
+            .sum();
+      }
+
+      ********************************MOVIMIENTO - LINEA 46 A 49************************************************
+      public void agregateA(Cuenta cuenta) {
+          cuenta.setSaldo(calcularValor(cuenta));
+          cuenta.agregarMovimiento(fecha, monto, esDeposito);
+        }
+
+      ********************************MOVIMIENTO - LINEA 51 A 56************************************************
+
+      public double calcularValor(Cuenta cuenta) {
+          if (esDeposito) {
+            return cuenta.getSaldo() + getMonto();
+          } else {
+            return cuenta.getSaldo() - getMonto();
+          }
+
+LONG METHOD
+
+    ************************************CUENTA - LINEA 41 A 55************************************************
+    public void sacar(double cuanto) {
+        if (cuanto <= 0) {
+          throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
+        }
+        if (getSaldo() - cuanto < 0) {
+          throw new SaldoMenorException("No puede sacar mas de " + getSaldo() + " $");
+        }
+        double montoExtraidoHoy = getMontoExtraidoA(LocalDate.now());
+        double limite = 1000 - montoExtraidoHoy;
+        if (cuanto > limite) {
+          throw new MaximoExtraccionDiarioException("No puede extraer mas de $ " + 1000
+              + " diarios, límite: " + limite);
+        }
+        new Movimiento(LocalDate.now(), cuanto, false).agregateA(this);
+      }
+
+PRIMITIVE OBSESSION
+
+    ************************************CUENTA - LINEA 48 A 49************************************************
+    double montoExtraidoHoy = getMontoExtraidoA(LocalDate.now());
+    double limite = 1000 - montoExtraidoHoy;
