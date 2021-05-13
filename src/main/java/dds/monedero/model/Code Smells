@@ -69,9 +69,3 @@ LONG METHOD
         }
         new Movimiento(LocalDate.now(), cuanto, false).agregateA(this);
       }
-
-PRIMITIVE OBSESSION
-
-    ************************************CUENTA - LINEA 48 A 49************************************************
-    double montoExtraidoHoy = getMontoExtraidoA(LocalDate.now());
-    double limite = 1000 - montoExtraidoHoy;

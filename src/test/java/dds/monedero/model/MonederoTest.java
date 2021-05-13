@@ -91,6 +91,6 @@ public class MonederoTest {
   }
   @Test
   public void FueExtraidoHoy() {
-    Assertions.assertTrue( unMovimiento.esDeLaFecha(LocalDate.now()) && unMovimiento.isExtraccion());
+    Assertions.assertTrue( otroMovimiento.fueExtraido(LocalDate.now()));
   }
 }
